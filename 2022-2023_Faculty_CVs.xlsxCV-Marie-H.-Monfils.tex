@@ -1,0 +1,431 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+% Awesome CV LaTeX Template for CV/Resume
+%
+% This template has been downloaded from:
+% https://github.com/posquit0/Awesome-CV
+%
+% Author:
+% Claud D. Park <posquit0.bj@gmail.com>
+% http://www.posquit0.com
+%
+%
+% Adapted to be an Rmarkdown template by Mitchell O'Hara-Wild
+% 23 November 2018
+%
+% Template license:
+% CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+%
+%-------------------------------------------------------------------------------
+% CONFIGURATIONS
+%-------------------------------------------------------------------------------
+% A4 paper size by default, use 'letterpaper' for US letter
+\documentclass[11pt,letter,]{awesome-cv}
+
+% Configure page margins with geometry
+\usepackage{geometry}
+\geometry{left=1.4cm, top=.8cm, right=1.4cm, bottom=1.8cm, footskip=.5cm}
+
+
+% Specify the location of the included fonts
+\fontdir[fonts/]
+
+% Color for highlights
+% Awesome Colors: awesome-emerald, awesome-skyblue, awesome-red, awesome-pink, awesome-orange
+%                 awesome-nephritis, awesome-concrete, awesome-darknight
+
+\definecolor{awesome}{HTML}{424242}
+
+% Colors for text
+% Uncomment if you would like to specify your own color
+% \definecolor{darktext}{HTML}{414141}
+% \definecolor{text}{HTML}{333333}
+% \definecolor{graytext}{HTML}{5D5D5D}
+% \definecolor{lighttext}{HTML}{999999}
+
+% Set false if you don't want to highlight section with awesome color
+\setbool{acvSectionColorHighlight}{true}
+
+% If you would like to change the social information separator from a pipe (|) to something else
+\renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
+
+\def\endfirstpage{\newpage}
+
+%-------------------------------------------------------------------------------
+%	PERSONAL INFORMATION
+%	Comment any of the lines below if they are not required
+%-------------------------------------------------------------------------------
+% Available options: circle|rectangle,edge/noedge,left/right
+
+\name{Marie-H.}{Monfils}
+
+
+\email{\href{mailto:marie.monfils@utexas.edu}{\nolinkurl{marie.monfils@utexas.edu}}}
+
+% \gitlab{gitlab-id}
+% \stackoverflow{SO-id}{SO-name}
+% \skype{skype-id}
+% \reddit{reddit-id}
+
+
+\usepackage{booktabs}
+
+\providecommand{\tightlist}{%
+	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%------------------------------------------------------------------------------
+
+
+
+% Pandoc CSL macros
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{2em}
+\newenvironment{CSLReferences}[3] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1 \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces\fi
+  % set entry spacing
+  \ifnum #2 > 0
+  \setlength{\parskip}{#2\baselineskip}
+  \fi
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\honortitlestyle{#1}}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\honordatestyle{#1}}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\begin{document}
+
+% Print the header with above personal informations
+% Give optional argument to change alignment(C: center, L: left, R: right)
+\makecvheader
+
+% Print the footer with 3 arguments(<left>, <center>, <right>)
+% Leave any of these blank if they are not needed
+% 2019-02-14 Chris Umphlett - add flexibility to the document name in footer, rather than have it be static Curriculum Vitae
+
+
+%-------------------------------------------------------------------------------
+%	CV/RESUME CONTENT
+%	Each section is imported separately, open each file in turn to modify content
+%------------------------------------------------------------------------------
+
+
+
+\hypertarget{publications}{%
+\section{Publications}\label{publications}}
+
+\hypertarget{journal-articles}{%
+\subsection{Journal Articles}\label{journal-articles}}
+
+\hypertarget{bibliography}{}
+\leavevmode\vadjust pre{\hypertarget{ref-1Monfils_2022}{}}%
+\CSLLeftMargin{1. }%
+\CSLRightInline{Monfils, M.-H., \& Domjan, M. (2022). The elegant
+complexity of fear in non-human animals. \emph{Emerging Topics in Life
+Sciences}, \emph{6}(5), 445--455.
+\url{https://doi.org/10.1042/etls20220001}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-2Monfils_2022}{}}%
+\CSLLeftMargin{2. }%
+\CSLRightInline{Monfils, M.-H., Lee, H. J., Cofresı́, R. U., \& Gonzales,
+R. A. (2022). Friend recollections, and a collection of collaborations
+with nadia. \emph{Frontiers in Behavioral Neuroscience}, \emph{16}.
+\url{https://doi.org/10.3389/fnbeh.2022.954906}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-3Monfils_2022}{}}%
+\CSLLeftMargin{3. }%
+\CSLRightInline{Monfils, M.-H. (2022). The high road to inhibiting fear
+memories. \emph{Biological Psychiatry}, \emph{92}(2), 102--103.
+\url{https://doi.org/10.1016/j.biopsych.2022.05.005}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-4Hilz_2022}{}}%
+\CSLLeftMargin{4. }%
+\CSLRightInline{Hilz, E. N., Olvera, M. E., Jun, D., Chadha, M.,
+Gillette, R., Monfils, M.-H., Gore, A. C., \& Lee, H. J. (2022).
+Hormonal contraceptives alter amphetamine place preference and
+responsivity in the intact female rat. \emph{Behavioral Neuroscience},
+\emph{136}(4), 318--329. \url{https://doi.org/10.1037/bne0000520}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-5Agee_2022}{}}%
+\CSLLeftMargin{5. }%
+\CSLRightInline{Agee, L. A., Nemchek, V., Malone, C. A., Lee, H. J., \&
+Monfils, M.-H. (2021). Appetitive behavior in the social transmission of
+food preference paradigm predicts activation of orexin-a producing
+neurons in a sex-dependent manner. \emph{Neuroscience}, \emph{481},
+30--46. \url{https://doi.org/10.1016/j.neuroscience.2021.11.032}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-6Nemchek_2021}{}}%
+\CSLLeftMargin{6. }%
+\CSLRightInline{Nemchek, V., Agee, L. A., Malone, C. A., Raskin, M.,
+Seese, S., \& Monfils, M. H. (2021). Altering perceived context:
+Transportation cues influence novelty-induced context exploration.
+\emph{Frontiers in Behavioral Neuroscience}, \emph{15}.
+\url{https://doi.org/10.3389/fnbeh.2021.714927}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-7Hilz_2022}{}}%
+\CSLLeftMargin{7. }%
+\CSLRightInline{Hilz, E. N., Lewis, S. M., Olshavsky, M. E., Khoury, E.
+S., Gore, A. C., Monfils, M. H., \& Lee, H. J. (2021). Sex differences
+in conditioned orienting and the role of estradiol in addiction-related
+behaviors. \emph{Behavioral Neuroscience}, \emph{136}(1), 19--29.
+\url{https://doi.org/10.1037/bne0000484}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-8Gershman_2021}{}}%
+\CSLLeftMargin{8. }%
+\CSLRightInline{Gershman, S. J., Jones, C. E., Norman, K. A., Monfils,
+M.-H., \& Niv, Y. (2021). Corrigendum: Gradual extinction prevents the
+return of fear: Implications for the discovery of state. \emph{Frontiers
+in Behavioral Neuroscience}, \emph{15}.
+\url{https://doi.org/10.3389/fnbeh.2021.786900}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-9Lancaster_2020}{}}%
+\CSLLeftMargin{9. }%
+\CSLRightInline{Lancaster, C. L., Monfils, M.-H., \& Telch, M. J.
+(2020). Augmenting exposure therapy with pre-extinction fear memory
+reactivation and deepened extinction: A randomized controlled trial.
+\emph{Behaviour Research and Therapy}, \emph{135}, 103730.
+\url{https://doi.org/10.1016/j.brat.2020.103730}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-10Blujus_2020}{}}%
+\CSLLeftMargin{10. }%
+\CSLRightInline{Blujus, J. K., Prevalska, I., Quevedo, S. F., Auchter,
+A., Korthauer, L. E., Dunk, M. M., Monfils, M. H., \& Driscoll, I.
+(2020). Updating mechanisms using an olfactory cue were not successful
+in improving memory in a rodent model of cognitive aging or in older
+adults. \emph{Psychology \& Neuroscience}, \emph{13}(3), 406--423.
+\url{https://doi.org/10.1037/pne0000209}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-11Auchter_2020}{}}%
+\CSLLeftMargin{11. }%
+\CSLRightInline{Auchter, A. M., Barrett, D. W., Monfils, M. H., \&
+Gonzalez-Lima, F. (2020). Methylene blue preserves cytochrome oxidase
+activity and prevents neurodegeneration and memory impairment in rats
+with chronic cerebral hypoperfusion. \emph{Frontiers in Cellular
+Neuroscience}, \emph{14}.
+\url{https://doi.org/10.3389/fncel.2020.00130}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-1}{}}%
+\CSLLeftMargin{12. }%
+\CSLRightInline{Monfils, M.-H. (2022). CO2 reactivity as a biomarker of
+exposure-based therapy non-response: Study protocol. \emph{BMC
+Psychiatry}.}
+
+\leavevmode\vadjust pre{\hypertarget{ref-2}{}}%
+\CSLLeftMargin{13. }%
+\CSLRightInline{Monfils, M.-H. (2022). Explaining the effectiveness of
+fear extinction through latent-cause inference. \emph{Neurons Behavior
+Data Analysis \& Theory Journal.}}
+
+\hypertarget{preprints}{%
+\subsection{Preprints}\label{preprints}}
+
+\hypertarget{bibliography}{}
+\leavevmode\vadjust pre{\hypertarget{ref-1Smits_2022}{}}%
+\CSLLeftMargin{1. }%
+\CSLRightInline{Smits, J. A. J., Monfils, M.-H., Otto, M. W., Telch, M.
+J., Shumake, J., Feinstein, J. S., Khalsa, S. S., Cobb, A. R., Parsons,
+E. M., Long, L. J., McSpadden, B., Johnson, D., Greenberg, A., \&
+Consortium, E. T. C. T. (2022). \emph{CO2 reactivity as a biomarker of
+exposure-based therapy non-response: Study protocol}.
+\url{https://doi.org/10.21203/rs.3.rs-2298817/v1}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-2Agee_2022}{}}%
+\CSLLeftMargin{2. }%
+\CSLRightInline{Agee, L. A., Hilz, E. N., Jun, D., Nemchek, V., Lee, H.
+J., \& Monfils, M.-H. (2022). \emph{Patterns of arc mRNA expression in
+the rat brain following dual recall of fear- and reward-based socially
+acquired information}. \url{https://doi.org/10.1101/2021.12.30.474464}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-3Song_2021}{}}%
+\CSLLeftMargin{3. }%
+\CSLRightInline{Song, M., Jones, C., Monfils, M.-H., \& Niv, Y. (2021).
+\emph{Explaining the effectiveness of fear extinction through
+latent-cause inference}. \url{https://doi.org/10.31234/osf.io/2fhr7}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-4Hilz_2021}{}}%
+\CSLLeftMargin{4. }%
+\CSLRightInline{Hilz, E. N., Agee, L. A., Jun, D., Monfils, M. H., \&
+Lee, H. J. (2021). \emph{Expression patterns of arc mRNA after renewal
+of appetitive behavior in female rats}.
+\url{https://doi.org/10.1101/2021.07.20.453088}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-5Hilz_2021}{}}%
+\CSLLeftMargin{5. }%
+\CSLRightInline{Hilz, E. N., Olvera, M., Jun, D., Chadha, M., Gillette,
+R., Monfils, M.-H., Gore, A. C., \& Lee, H. J. (2021). \emph{Hormonal
+contraceptives alter amphetamine place preference and responsivity in
+the intact female rat}. \url{https://doi.org/10.1101/2021.07.28.454029}}
+
+\hypertarget{books}{%
+\subsection{Books}\label{books}}
+
+\hypertarget{bibliography}{}
+\leavevmode\vadjust pre{\hypertarget{ref-1}{}}%
+\CSLLeftMargin{1. }%
+\CSLRightInline{Monfils, M.-H. (2023). \emph{Social beasts: Learning
+vicariously to flexibly adapt to a changing world.} Princeton University
+Press.}
+
+\hypertarget{book-chapters}{%
+\subsection{Book Chapters}\label{book-chapters}}
+
+\hypertarget{bibliography}{}
+\leavevmode\vadjust pre{\hypertarget{ref-1}{}}%
+\CSLLeftMargin{1. }%
+\CSLRightInline{Monfils, M.-H. (2022). Reconsolidation and fear
+extinction: An update. In \emph{Current topics in behavioral
+neurosciences (CTBN). Mohamed milad and seth norrholm, editors.}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-2}{}}%
+\CSLLeftMargin{2. }%
+\CSLRightInline{Monfils, M.-H. (2021). How can intrusive thinking be
+conceptualized at the level of psychological mechanisms? In \emph{Ernst
+strungmann forum book intrusive thinking across neuropsychological
+disorders.}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-3}{}}%
+\CSLLeftMargin{3. }%
+\CSLRightInline{Monfils, M.-H. (2021). Neuropsychological mechanisms of
+intrusive thinking. In \emph{In ernst strungmann forum book intrusive
+thinking across neuropsychological disorders}.}
+
+\hypertarget{professional-presentations}{%
+\section{Professional Presentations}\label{professional-presentations}}
+
+\begin{cventries}
+    \cventry{Cambridge University}{Individual differences and social transfer of knowledge.}{}{2021}{}\vspace{-4.0mm}
+    \cventry{Wayne State University}{Assessing individual differences to optimize fear attenuation.}{}{2021}{}\vspace{-4.0mm}
+\end{cventries}
+
+\hypertarget{conference-abstracts}{%
+\section{Conference Abstracts}\label{conference-abstracts}}
+
+\hypertarget{honors}{%
+\section{Honors}\label{honors}}
+
+\begin{cventries}
+\end{cventries}
+
+\hypertarget{funding}{%
+\section{Funding}\label{funding}}
+
+\begin{cventries}
+    \cventry{Funding: \$1,964,345}{Reducing alcohol-seeking behavior in a rat model of alcohol dependence- Co-I  (pending; 1st percentile)}{NIH, }{2022 - 2027}{}\vspace{-4.0mm}
+    \cventry{Funding: \$763,817}{1/2: CO2 Reactivity as a Biomarker of Non-response to Exposure-based Therapy}{NIMH, R01MH125951}{2022 - 2027}{}\vspace{-4.0mm}
+    \cventry{Funding: \$800,000}{Influence of shared experience on relational dynamics and vicarious learning}{Directorate for Social, Behavioral \& Economic Sciences, 2141102}{2022 - 2025}{}\vspace{-4.0mm}
+    \cventry{Funding: \$472,297}{Disambiguating networks and factors that promote social transmission of information in rats}{Directorate for Social, Behavioral \& Economic Sciences, 1748911}{2018 - 2021}{}\vspace{-4.0mm}
+\end{cventries}
+
+\hypertarget{service}{%
+\section{Service}\label{service}}
+
+\begin{cventries}
+    \cventry{Undergraduate Mentor}{The University of Texas at Austin}{Austin, 
+US}{2022 -
+present}{}\vspace{-4.0mm}
+    \cventry{Grant Reviewer}{The University of Texas at Austin}{Austin, 
+US}{2022 -
+present}{}\vspace{-4.0mm}
+    \cventry{Member}{The University of Texas at Austin}{Austin, 
+US}{2022 -
+present}{}\vspace{-4.0mm}
+    \cventry{Chair}{The University of Texas at Austin}{Austin, 
+US}{2022 -
+present}{}\vspace{-4.0mm}
+    \cventry{Member}{The University of Texas at Austin}{Austin, 
+US}{2021 -
+present}{}\vspace{-4.0mm}
+    \cventry{Advisory Council Member}{The University of Texas at Austin}{Austin, 
+US}{2020 -
+present}{}\vspace{-4.0mm}
+    \cventry{Associate Chair for Research and Operations}{The University of Texas at Austin}{Austin, 
+US}{2019 -
+present}{}\vspace{-4.0mm}
+    \cventry{Executive Committee Member-Psychology}{The University of Texas at Austin}{Austin, 
+US}{2019 -
+present}{}\vspace{-4.0mm}
+    \cventry{Member}{The University of Texas at Austin}{Austin, 
+US}{2019 -
+present}{}\vspace{-4.0mm}
+    \cventry{Chair of Animal Research Center Faculty Advisory Committee}{The University of Texas at Austin}{Austin, 
+US}{2017 -
+present}{}\vspace{-4.0mm}
+    \cventry{Mentor}{The University of Texas at Austin}{Austin, 
+US}{2022 -
+2023}{}\vspace{-4.0mm}
+    \cventry{Grant Reviewing}{Swiss National Science Foundation}{Bern, 
+CH}{2021 -
+2022}{}\vspace{-4.0mm}
+    \cventry{CoLA COVID 19 response; Research Reopening Committee}{The University of Texas at Austin}{Austin, 
+US}{2020 -
+2022}{}\vspace{-4.0mm}
+    \cventry{CoLA COVID 19 response; Research Reopening Building coordinator for SEA Building}{The University of Texas at Austin}{Austin, 
+US}{2020 -
+2022}{}\vspace{-4.0mm}
+    \cventry{}{NIMH}{Bethesda, 
+US}{2018 -
+2022}{}\vspace{-4.0mm}
+    \cventry{Science Reports}{University of Texas at Austin}{Austin, 
+US}{2017 -
+2022}{}\vspace{-4.0mm}
+    \cventry{Frontiers in Behavioral Neuroscience}{University of Texas at Austin}{Austin, 
+US}{2010 -
+2022}{}\vspace{-4.0mm}
+    \cventry{Executive Committee Member-Institute for Neuroscience}{The University of Texas at Austin}{Austin, 
+US}{2018 -
+2021}{}\vspace{-4.0mm}
+    \cventry{Graduate Adviser}{The University of Texas at Austin}{Austin, 
+US}{2018 -
+2021}{}\vspace{-4.0mm}
+\end{cventries}
+
+\hypertarget{mentoring-and-teaching}{%
+\section{Mentoring and Teaching}\label{mentoring-and-teaching}}
+
+\hypertarget{mentoring}{%
+\subsection{Mentoring}\label{mentoring}}
+
+\begin{cventries}
+    \cventry{Undergraduate Honors student}{Miriam Ortega}{}{NA -
+present}{}\vspace{-4.0mm}
+    \cventry{Undergraduate Mentor}{Michael Pasala}{}{2022 -
+present}{}\vspace{-4.0mm}
+    \cventry{Undergraduate Student}{Grace Wulffraat}{}{2021 -
+2023}{}\vspace{-4.0mm}
+    \cventry{Committee Member}{Tyler Milewski}{}{2022 -
+2022}{}\vspace{-4.0mm}
+    \cventry{Graduate Mentor}{Sydney Seese}{}{2020 -
+2022}{}\vspace{-4.0mm}
+    \cventry{Dissertation Supervisor}{Kylee Smith}{}{2018 -
+2022}{}\vspace{-4.0mm}
+    \cventry{Supervisor}{Marissa Raskin}{}{2018 -
+2022}{}\vspace{-4.0mm}
+    \cventry{Undergraduate Student}{Sun Chong}{}{2020 -
+2021}{}\vspace{-4.0mm}
+    \cventry{Graduate Mentor}{Victoria Nemchek}{}{2019 -
+2021}{}\vspace{-4.0mm}
+    \cventry{Dissertation Supervisor}{Laura Agee}{}{2015 -
+2021}{}\vspace{-4.0mm}
+    \cventry{Committee Member}{Emily Hilz}{}{2015 -
+2021}{}\vspace{-4.0mm}
+\end{cventries}
+
+~
+
+\hypertarget{teaching}{%
+\subsection{Teaching}\label{teaching}}
+
+\begin{cventries}
+    \cventry{Instructor}{Psychology 371}{}{2019 -
+2022}{}\vspace{-4.0mm}
+\end{cventries}
+
+
+
+\end{document}

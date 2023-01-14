@@ -1,0 +1,525 @@
+---
+name: "`r params$name`" # replace with your first name
+surname: "`r params$surname`" # replace with your last name here
+email: "`r params$email`" #`r params$email`" # replace with your email
+# the above fields must be included to avoid error; for additional ones that
+# you can include (e.g., position, address, profilepic, website) see the
+# "Introduction to vitae" vignette.
+date: "`r format(Sys.time(), '%B %Y')`"
+headcolor: 424242
+output: vitae::awesomecv
+papersize: letter
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(tidyverse) # collection of general data processing tools
+library(vitae) # workhorse function for generating the formatted CV as PDF
+library(rorcid) # interfaces with ORCID API
+library(scales) # needed to format funding amounts in currency units
+library(glue) # provides syntactic sugar for pasting together strings
+library(rcrossref) # interfaces with CrossRef API 
+                   # (IMPORTANT--current CRAN version DOES NOT WORK
+                   #  Must install development version from GitHub)
+orcid <- params$orcid
+current_year <- as.integer(format(Sys.Date(), "%Y"))
+# Start CV 3 years prior to current year
+start_year <- current_year - 3L
+```
+
+```{r, eval = FALSE}
+x <- orcid_auth()
+x
+# the token returned here needs to be saved into the .Renviron file
+# so that it is available when the document gets knitted.
+# On Mac (or Linux) this is a hidden file located in the home directory.
+# Add the following line to the .Renviron file: e.g.,
+# ORCID_TOKEN = dc0a6b6b-b4d4-4276-bc89-78c1e9ede56e
+# substituting the token above with whatever is returned here:
+```
+
+```{r}
+activities <- orcid_activities(orcid)
+distinctions <- pluck(
+  activities, 1, "distinctions", "affiliation-group", "summaries"
+) 
+if(!is.null(distinctions)){
+  distinctions <- distinctions %>% reduce(bind_rows)
+}
+fundings <- pluck(activities, 1, "fundings", "group", "funding-summary") 
+if(!is.null(fundings)){
+  fundings <- fundings %>% 
+    reduce(bind_rows) %>%
+    filter(`end-date.year.value` >= start_year)
+  if(nrow(fundings) == 0) fundings <- NULL
+}
+if(!is.null(fundings)){
+  if("external-ids.external-id" %in% names(fundings)){
+    no_external_id <- map_lgl(fundings$`external-ids.external-id`, is.null)
+    if(any(no_external_id)){
+      fundings$`external-ids.external-id`[no_external_id] <- map(
+      fundings$`external-ids.external-id`[no_external_id],
+      ~ list(`external-id-value` = "")
+      )
+    }
+  } else {
+    fundings$`external-ids.external-id` <- vector(
+      mode = "list",
+      length = nrow(fundings)
+    )
+    fundings$`external-ids.external-id` <- map(
+      fundings$`external-ids.external-id`,
+      ~ list(`external-id-value` = "")
+    )
+  }
+  amounts <- map(fundings$`put-code`, ~ orcid_fundings(orcid, .x)) %>% 
+    reduce(c) %>%
+    map_chr(
+      function(x){
+        x <- x$amount$value
+        if(is.null(x)) "" else dollar(as.integer(x))
+      }
+    )
+  fundings <- fundings  %>%
+    mutate(
+      amount = amounts,
+      grantno = map(`external-ids.external-id`, "external-id-value"),
+      grantno = map_chr(grantno, ~ {if(is.null(.x)) "" else .x})
+    )
+}
+services <- pluck(
+  activities, 1, "services", "affiliation-group", "summaries"
+) 
+service <- services
+mentoring <- NULL
+teaching <- NULL
+if(!is.null(services)){
+  services <- services %>% reduce(bind_rows)
+  if(!"service-summary.end-date.year.value" %in% names(services)){
+    services$`service-summary.end-date.year.value` <- NA
+  }
+  services <- services %>%
+    filter(
+      `service-summary.end-date.year.value` >= start_year |
+        is.na(`service-summary.end-date.year.value`)
+    )
+  services$`service-summary.end-date.year.value`[
+    is.na(services$`service-summary.end-date.year.value`)
+  ] <- "present"
+  mentor <- grepl(
+    "^Mentor", 
+    services$`service-summary.organization.name`, 
+    TRUE
+  ) & nchar(services$`service-summary.organization.name`) <= 10
+  teach <- grepl(
+    "^Teach", 
+    services$`service-summary.organization.name`, 
+    TRUE
+  ) & nchar(services$`service-summary.organization.name`) <= 10
+  service <- services[!(mentor | teach),]
+  if(any(mentor)){
+    mentoring <- services[mentor,]
+  }
+  if(any(teach)){
+    teaching <- services[teach,]
+  }
+}
+# For peer reviews, the ORCID query does not return name of journal, but rather
+# the ISSN <grumble, grumble!>, so we have to look up the ISSN, which the 
+# following vectorized function does:
+find_journal <- function(x){
+  issn <- unique(x)
+  # first try crossref which is faster but may not have all ISSNs
+  jrnl <- map(issn, cr_journals) %>% map(pluck, "data", "title") %>%
+    map_chr(~ {if(is.null(.x)) NA_character_ else .x})
+  # for any missing journals, scrape issn.org. 
+  # (their API requires paid subscription, but web searches are free)
+  path <- paste(
+    'https://portal.issn.org/resource/ISSN/', issn[is.na(jrnl)], sep = ''
+  )
+  jrnl[is.na(jrnl)] <- map_chr(path, function(x){
+    out <- xml2::read_html(x) %>% rvest::html_nodes("p") %>% rvest::html_text()
+    out <- out[grep("Title proper", out)]
+    out <- gsub("Title proper: ", "", out) %>% tools::toTitleCase()
+    substr(out, 1, nchar(out)-1)
+  })
+  names(jrnl) <- issn
+  jrnl[x]
+  # may be good idea to plan for contingency if journal name is missing from
+  # both crossref and issn.org
+}
+```
+
+# Publications
+
+## Journal Articles
+
+```{r}
+all_works <- works(orcid) %>% 
+  as_tibble() %>%
+  mutate(year = as.integer(`publication-date.year.value`)) %>%
+  filter(year >= start_year)
+types <- all_works$type
+class(all_works) <- c(class(all_works), "works")
+```
+
+```{r}
+articles <- all_works[types == "journal-article",]
+if(nrow(articles) > 0){
+  has_doi <- !map_lgl(articles$`external-ids.external-id`, is_empty)
+  has_pmc <- has_doi
+  has_doi[has_doi] <- map_lgl(
+    articles$`external-ids.external-id`[has_doi],
+    ~ "doi" %in% .x$`external-id-type`
+  )
+  has_pmc[has_pmc] <- map_lgl(
+    articles$`external-ids.external-id`[has_pmc],
+    ~ "pmc" %in% .x$`external-id-type`
+  )
+  pubs3 <- NULL
+  if(any(has_doi | has_pmc)){
+    doi_articles <- articles[has_doi | has_pmc,]
+    dois <- map_chr(
+      doi_articles$`external-ids.external-id`,
+      function(x){
+        if("doi" %in% x$`external-id-type`){
+          x <- x[x$`external-id-type` == "doi", "external-id-value"] %>%
+            map_chr(~.x[1])
+          x[1]
+        } else {
+          doi <- id_converter(
+            x[x$`external-id-type` == "pmc", "external-id-value"], "pmcid"
+          )$records$doi
+          if(is.null(doi)) NA_character_ else doi
+        }
+      }
+    )
+    doi_articles <- doi_articles[!is.na(dois),]
+    dois <- dois[!is.na(dois)]
+    dois <- tolower(dois)
+    dois <- gsub("^(https:\\/\\/)*doi.(org/)*", "", dois)
+    doi_articles <- doi_articles[!duplicated(dois),]
+    dois <- unique(dois)
+    pubs <- cr_cn(dois, format = "bibtex")
+    prob_pubs <- !grepl("journal =", pubs)
+    if(any(prob_pubs) && "journal-title.value" %in% names(doi_articles)){
+      pubs <- gsub("^@misc", "@article", pubs)
+      pubs[prob_pubs] <- map2(
+        pubs[prob_pubs],
+        doi_articles$`journal-title.value`[prob_pubs],
+        ~ gsub(
+          "\n}$", 
+          paste0(",\n\tjournal = {", .y, "}\n}", collapse = ""), 
+          .x
+        )
+      )
+    }
+    doi_articles <- doi_articles[grepl("journal =", pubs),]
+    pubs <- pubs[grepl("journal =", pubs)]
+    pubs2 <- imap(
+      pubs, 
+      ~ gsub("@article\\{", paste("@article{", .y, sep = ""), .x)
+    )
+    pubs3 <- map2(
+      doi_articles$year, 
+      pubs2,
+    ~ gsub("year = ....", paste("year =", .x), .y)
+    )
+  }
+  ref <- NULL
+  if(any(!has_doi & !has_pmc)){
+    articles <- articles[!has_doi & !has_pmc,]
+    ref <- map(
+      1:nrow(articles),
+      ~ with(
+        articles,
+        bibentry(
+          bibtype = "Article",
+          title = title.title.value[.x],
+          author = `source.source-name.value`[.x],
+          journal = ifelse(
+            is.na(`journal-title.value`[.x]), 
+            ".",
+            `journal-title.value`[.x]
+          ),
+          year = `publication-date.year.value`[.x],
+          key = .x
+        )
+      )
+    ) %>% map(format, style = "Bibtex")
+  }
+  pubs <- c(pubs3, ref)
+  pubs <- gsub("upepsilon", "epsilon", pubs)
+  pubs <- gsub("\\$\\\\less\\$/*scp\\$\\\\greater\\$", "", pubs)
+  pubs <- gsub("amp\\$\\\\mathsemicolon\\$", "", pubs)
+  pubs <- gsub(" de Barbaro ", " {de Barbaro} ", pubs)
+  pubs <- gsub(" de Barbaro}", " {de Barbaro}}", pubs)
+  pubs <- gsub("de~Barbaro", "{de Barbaro}", pubs)
+  if("pubs.bib" %in% list.files()) unlink("pubs.bib")
+  walk(pubs, write, file = "pubs.bib", append = TRUE)
+  bibliography_entries("pubs.bib")
+}
+```
+
+## Preprints
+
+```{r}
+preprints <- all_works[types == "preprint",]
+if(nrow(preprints) > 0){
+  has_doi <- !map_lgl(preprints$`external-ids.external-id`, is_empty)
+  has_doi[has_doi] <- map_lgl(
+    preprints$`external-ids.external-id`[has_doi],
+    ~ "doi" %in% .x$`external-id-type`
+  )
+  pubs3 <- NULL
+  if(any(has_doi)){
+    doi_preprints <- preprints[has_doi,]
+    dois <- map_chr(
+      doi_preprints$`external-ids.external-id`,
+      function(x){
+        if("doi" %in% x$`external-id-type`){
+          x <- x[x$`external-id-type` == "doi", "external-id-value"] %>%
+            map_chr(~ sort(.x, decreasing = TRUE)[1])
+          sort(x, decreasing = TRUE)[1]
+        } else {
+          doi <- id_converter(
+            x[x$`external-id-type` == "pmc", "external-id-value"], "pmcid"
+          )$records$doi
+          if(is.null(doi)) NA_character_ else doi
+        }
+      }
+    )
+    doi_preprints <- doi_preprints[!duplicated(dois),]
+    dois <- unique(dois)
+    pubs <- cr_cn(dois, format = "bibtex")
+    pubs2 <- imap(
+      pubs, 
+      ~ gsub("@article\\{", paste("@article{", .y, sep = ""), .x)
+    )
+    pubs3 <- map2(
+      doi_preprints$year, 
+      pubs2,
+      ~ gsub("year = ....", paste("year =", .x), .y)
+    )
+  }
+  ref <- NULL
+  if(any(!has_doi)){
+    preprints <- preprints[!has_doi,]
+    ref <- map(
+      1:nrow(preprints),
+      ~ with(
+        preprints,
+        bibentry(
+          bibtype = "Article",
+          title = title.title.value[.x],
+          author = `source.source-name.value`[.x],
+          journal = ifelse(
+            is.na(`journal-title.value`[.x]), 
+            ".",
+            `journal-title.value`[.x]
+          ),
+          year = `publication-date.year.value`[.x],
+          key = .x
+        )
+      )
+    ) %>% map(format, style = "Bibtex")
+  }
+  pubs <- c(pubs3, ref)
+  pubs <- gsub("amp\\$\\\\mathsemicolon\\$", "", pubs)
+  pubs <- gsub("\\$\\\\less\\$[\\/]*i\\$\\\\greater\\$", "", pubs)
+  pubs <- gsub(" de Barbaro ", " {de Barbaro} ", pubs)
+  pubs <- gsub(" de Barbaro}", " {de Barbaro}}", pubs)
+  if("preprints.bib" %in% list.files()) unlink("preprints.bib")
+  walk(pubs, write, file = "preprints.bib", append = TRUE)
+  bibliography_entries("preprints.bib")
+}
+```
+
+## Books
+
+```{r books}
+if("book" %in% types){
+  books <- all_works[types == "book",]
+  missing_publisher <- is.na(books$`journal-title.value`)
+  books$`journal-title.value`[missing_publisher] <- 
+    books$url.value[missing_publisher]
+  bref <- map(
+    1:nrow(books),
+    ~ with(
+      books,
+      bibentry(
+        bibtype = "Book",
+        title = title.title.value[.x],
+        author = `source.source-name.value`[.x],
+        publisher = `journal-title.value`[.x],
+        year = `publication-date.year.value`[.x],
+        key = .x
+      )
+    )
+  ) %>% map(format, style = "Bibtex")
+  if("books.bib" %in% list.files()) unlink("books.bib")
+  walk(bref, write, file = "books.bib", append = TRUE)
+  bibliography_entries("books.bib")
+}
+```
+
+## Book Chapters
+
+```{r}
+if("book-chapter" %in% types){
+  chapters <- all_works[types == "book-chapter",]
+  has_doi <- !map_lgl(chapters$`external-ids.external-id`, is_empty)
+  has_doi[has_doi] <- map_lgl(
+    chapters$`external-ids.external-id`[has_doi],
+    ~ "doi" %in% .x$`external-id-type`
+  )
+  pubs3 <- NULL
+  if(any(has_doi)){
+    doi_chapters <- chapters[has_doi,]
+    dois <- identifiers(doi_chapters, "doi")
+    doi_chapters <- doi_chapters[!duplicated(dois),]
+    pubs <- cr_cn(unique(dois), format = "bibtex")
+    pubs2 <- imap(
+      pubs, 
+      ~ gsub("@article\\{", paste("@article{", .y, sep = ""), .x)
+    )
+    pubs3 <- map2(
+      doi_chapters$year, 
+      pubs2,
+      ~ gsub("year = ....", paste("year =", .x), .y)
+    )
+  }
+  ref <- NULL
+  if(any(!has_doi)){
+    chapters <- chapters[!has_doi,]
+    ref <- map(
+      1:nrow(chapters),
+      ~ with(
+        chapters,
+        bibentry(
+          bibtype = "InCollection",
+          title = title.title.value[.x],,
+          author = `source.source-name.value`[.x],
+          booktitle = `journal-title.value`[.x],
+          year = `publication-date.year.value`[.x],
+          publisher = ".",
+          key = .x
+        )
+      )
+    ) %>% map(format, style = "Bibtex")
+  }
+  pubs <- c(pubs3, ref)
+  if("chaps.bib" %in% list.files()) unlink("chaps.bib")
+  walk(pubs, write, file = "chaps.bib", append = TRUE)
+  bibliography_entries("chaps.bib")
+}
+```
+
+# Professional Presentations
+
+```{r talks}
+if("lecture-speech" %in% types){
+talks <- types == "lecture-speech"
+all_works[talks,] %>%
+  detailed_entries(
+    with = `title.title.value`,
+    when = `publication-date.year.value`,
+    what = `journal-title.value`,
+    why = `title.subtitle`
+  )
+}
+```
+
+# Conference Abstracts
+
+```{r abstracts}
+if(any(grepl("conference",types))){
+conf <- grepl("conference", types)
+all_works[conf,] %>%
+  detailed_entries(
+    with = `title.title.value`,
+    when = `publication-date.year.value`,
+    what = `journal-title.value`
+  )
+}
+```
+
+# Honors
+
+```{r distinctions}
+if(!is.null(distinctions)){
+  distinctions %>% detailed_entries(
+    with = `distinction-summary.role-title`,
+    when = `distinction-summary.start-date.year.value`,
+    what = `distinction-summary.organization.name`,
+    where = glue("{`distinction-summary.organization.address.city`}, 
+                 {`distinction-summary.organization.address.country`}")
+  ) %>% filter(when >= start_year)
+}
+```
+
+# Funding
+
+```{r, funding}
+if(!is.null(fundings)){
+  fundings %>%
+    arrange(desc(`end-date.year.value`), desc(`start-date.year.value`)) %>%
+    mutate(organization.name = case_when(
+      organization.name == "National Institute of Mental Health" ~ "NIMH",
+      TRUE ~ organization.name)
+    ) %>%
+    detailed_entries(
+      with = title.title.value,
+      when = glue("{`start-date.year.value`} - {`end-date.year.value`}"),
+      what = glue::glue("Funding: {amount}"),
+      where = glue::glue("{organization.name}, {grantno}")
+    )
+}
+```
+
+# Service
+
+```{r service}
+if(!is.null(service)){
+  service %>%
+    detailed_entries(
+      with = `service-summary.organization.name`,
+      when = glue("{`service-summary.start-date.year.value`} -
+                  {`service-summary.end-date.year.value`}"),
+      what = `service-summary.role-title`,
+      where = glue("{`service-summary.organization.address.city`}, 
+                   {`service-summary.organization.address.country`}")
+    )
+}
+```
+
+# Mentoring and Teaching
+
+## Mentoring
+
+```{r mentoring}
+if(!is.null(mentoring)){
+  mentoring %>%
+    detailed_entries(
+      with = `service-summary.department-name`,
+      when = glue("{`service-summary.start-date.year.value`} -
+                  {`service-summary.end-date.year.value`}"),
+      what = `service-summary.role-title`
+    )
+}
+```
+&nbsp;
+
+## Teaching
+
+```{r teaching}
+if(!is.null(teaching)){
+  teaching %>%
+    detailed_entries(
+      with = `service-summary.department-name`,
+      when = glue("{`service-summary.start-date.year.value`} -
+                  {`service-summary.end-date.year.value`}"),
+      what = `service-summary.role-title`
+    )
+}
+```
