@@ -1,4 +1,6 @@
-# 0000-0001-8971-6651
+# 0000-0001-8971-6651 monfils
+# 0000-0002-2422-0150 josephs
+bob.josephs@utexas.edu
 
 library(tidyverse)
 library(rorcid)
@@ -62,6 +64,6 @@ walk2(
 )
 
 render_report("0000-0001-8971-6651", "marie.monfils@utexas.edu", path)
-render_report("0000-0001-5546-007X", "curley@utexas.edu", path)
+render_report("0000-0002-2422-0150", "bob.josephs@utexas.edu", path)
 
 
