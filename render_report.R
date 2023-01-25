@@ -1,12 +1,9 @@
-# 0000-0001-8971-6651 monfils
-# 0000-0002-2422-0150 josephs
-bob.josephs@utexas.edu
-
 library(tidyverse)
 library(rorcid)
 library(vitae)
 library(rcrossref)
 path <- "/Users/mia/Desktop/auto_cv/2022-2023_Faculty_CVs.xlsx"
+
 render_report = function(orcid, email, path){
   person <- orcid_person(orcid)[[1]]
   current_year <- as.integer(format(Sys.Date(), "%Y"))
@@ -55,15 +52,7 @@ render_report = function(orcid, email, path){
   }
 }
 
-faculty <- read_csv(paste(path, "*Faculty ORCID IDs.csv", sep = ""))
-walk2(
-  faculty$OrcidID, 
-  faculty$email,
-  render_report,
-  path = path
-)
+render_report("", "", path)
 
-render_report("0000-0001-8971-6651", "marie.monfils@utexas.edu", path)
-render_report("0000-0002-2422-0150", "bob.josephs@utexas.edu", path)
 
 
