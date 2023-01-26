@@ -52,7 +52,7 @@ render_report = function(orcid, email, path){
   }
 }
 
-render_report("", "", path)
+render_report("0000-0002-8771-3956", "mestoncm@utexas.edu", path)
 
 
 
