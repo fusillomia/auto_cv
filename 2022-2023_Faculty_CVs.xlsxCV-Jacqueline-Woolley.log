@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.1.14)  2 FEB 2023 14:37
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.1.14)  7 FEB 2023 14:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -779,25 +779,25 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 4.99947pt on input line 132.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 221.
+(Font)              scaled to size 10.0pt on input line 216.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(1)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 221.
+(Font)              scaled to size 10.0pt on input line 216.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(2)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 221.
+(Font)              scaled to size 9.0pt on input line 216.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(2)/m/sl' in size <9> not available
-(Font)              Font shape `TU/SourceSansPro(2)/m/it' tried instead on input line 221.
+(Font)              Font shape `TU/SourceSansPro(2)/m/it' tried instead on input line 216.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(2)/m/it' will be
-(Font)              scaled to size 9.0pt on input line 221.
+(Font)              scaled to size 9.0pt on input line 216.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 221.
+(Font)              scaled to size 8.0pt on input line 216.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(1)/m/sc' will be
-(Font)              scaled to size 8.0pt on input line 221.
+(Font)              scaled to size 8.0pt on input line 216.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(2)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 221.
+(Font)              scaled to size 8.0pt on input line 216.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(2)/m/sl' in size <8> not available
-(Font)              Font shape `TU/SourceSansPro(2)/m/it' tried instead on input line 221.
+(Font)              Font shape `TU/SourceSansPro(2)/m/it' tried instead on input line 216.
 LaTeX Font Info:    Font shape `TU/SourceSansPro(2)/m/it' will be
-(Font)              scaled to size 8.0pt on input line 221.
+(Font)              scaled to size 8.0pt on input line 216.
 [1
 
 ] [2] [3] (./2022-2023_Faculty_CVs.xlsxCV-Jacqueline-Woolley.aux)
@@ -807,7 +807,7 @@ Package rerunfilecheck Info: File `2022-2023_Faculty_CVs.xlsxCV-Jacqueline-Wooll
 Here is how much of TeX's memory you used:
  32923 strings out of 478777
  672216 string characters out of 5850044
- 1878979 words of memory out of 5000000
+ 1884979 words of memory out of 5000000
  52388 multiletter control sequences out of 15000+600000
  517901 words of font info for 128 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
