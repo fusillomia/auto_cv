@@ -52,7 +52,7 @@ render_report = function(orcid, email, path){
   }
 }
 
-render_report("0000-0002-3363-0274", "domjan@austin.utexas.edu", path)
+render_report("0000-0002-7838-4396", "legare@austin.utexas.edu", path)
 
 
 
