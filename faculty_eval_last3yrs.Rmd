@@ -124,6 +124,7 @@ if(!is.null(services)){
     teaching <- services[teach,]
   }
 }
+
 # For peer reviews, the ORCID query does not return name of journal, but rather
 # the ISSN <grumble, grumble!>, so we have to look up the ISSN, which the 
 # following vectorized function does:
@@ -201,7 +202,7 @@ if(nrow(articles) > 0){
     doi_articles <- doi_articles[!duplicated(dois),]
     dois <- unique(dois)
     pubs <- cr_cn(dois, format = "bibtex")
-    prob_pubs <- !grepl("journal =", pubs)
+    prob_pubs <- !grepl("journal=", pubs)
     if(any(prob_pubs) && "journal-title.value" %in% names(doi_articles)){
       pubs <- gsub("^@misc", "@article", pubs)
       pubs[prob_pubs] <- map2(
@@ -209,13 +210,13 @@ if(nrow(articles) > 0){
         doi_articles$`journal-title.value`[prob_pubs],
         ~ gsub(
           "\n}$", 
-          paste0(",\n\tjournal = {", .y, "}\n}", collapse = ""), 
+          paste0(",\n\tjournal={", .y, "}\n}", collapse = ""), 
           .x
         )
       )
     }
-    doi_articles <- doi_articles[grepl("journal =", pubs),]
-    pubs <- pubs[grepl("journal =", pubs)]
+    doi_articles <- doi_articles[grepl("journal=", pubs),]
+    pubs <- pubs[grepl("journal=", pubs)]
     pubs2 <- imap(
       pubs, 
       ~ gsub("@article\\{", paste("@article{", .y, sep = ""), .x)
@@ -523,3 +524,5 @@ if(!is.null(teaching)){
     )
 }
 ```
+
+

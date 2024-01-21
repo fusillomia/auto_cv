@@ -1,7 +1,38 @@
+usethis::edit_r_environ()
+
+orcid_auth()
+
+# copy/paste your client ID from https://orcid.org/developer-tools
+orcid_client_id <- "APP-1DZFVN0VB4EE0OOB"
+
+# copy/paste your client secret from https://orcid.org/developer-tools
+orcid_client_secret <- "4a3e1fc7-402f-4673-8825-e19ae973e2ee"
+Now execute the below code, which will send a POST request (from the httr package) to ORCID and return to you an access token.
+orcid_request <- POST(url  = "https://orcid.org/oauth/token",
+                      config = add_headers(`Accept` = "application/json",
+                                           `Content-Type` = "application/x-www-form-urlencoded"),
+                      body = list(grant_type = "client_credentials",
+                                  scope = "/read-public",
+                                  client_id = orcid_client_id,
+                                  client_secret = orcid_client_secret),
+                      encode = "form")
+
+orcid_response <- content(orcid_request)
+print(orcid_response$access_token)
+
+
+
+
+
+
+
+
+
 library(tidyverse)
 library(rorcid)
 library(vitae)
 library(rcrossref)
+# library(httr)
 path <- "/Users/mia/Desktop/auto_cv/2022-2023_Faculty_CVs.xlsx"
 
 render_report = function(orcid, email, path){
@@ -52,7 +83,7 @@ render_report = function(orcid, email, path){
   }
 }
 
-render_report("0000-0001-8971-6651", "marie.monfils@utexas.edu", path)
+render_report("0000-0001-8971-6651", "marie.monfils@gmail.com", path)
 
 
 
