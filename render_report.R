@@ -7,7 +7,7 @@ orcid_client_id <- "APP-1DZFVN0VB4EE0OOB"
 
 # copy/paste your client secret from https://orcid.org/developer-tools
 orcid_client_secret <- "4a3e1fc7-402f-4673-8825-e19ae973e2ee"
-Now execute the below code, which will send a POST request (from the httr package) to ORCID and return to you an access token.
+
 orcid_request <- POST(url  = "https://orcid.org/oauth/token",
                       config = add_headers(`Accept` = "application/json",
                                            `Content-Type` = "application/x-www-form-urlencoded"),
@@ -83,7 +83,7 @@ render_report = function(orcid, email, path){
   }
 }
 
-render_report("0000-0001-8971-6651", "marie.monfils@gmail.com", path)
+render_report("0000-0002-7472-2853", "schnyer@utexas.edu", path)
 
 
 
