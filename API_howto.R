@@ -2,6 +2,7 @@
 
 library(tidyverse)
 library(rorcid)
+library(httr)
 
 usethis::edit_r_environ()
 
